@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>88EX Wallet Pay & Earn PM Demo</title>
+  <style>
+    :root {
+      --bg: #0e1117;
+      --panel: #151922;
+      --panel-2: #1b2130;
+      --line: #2b3344;
+      --text: #eef2f7;
+      --muted: #94a3b8;
+      --accent: #f4c95d;
+      --good: #49d17d;
+      --warn: #ffb454;
+      --bad: #ff647c;
+      --blue: #69a7ff;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(244, 201, 93, .12), transparent 32rem),
+        linear-gradient(135deg, #0e1117 0%, #111827 52%, #10151f 100%);
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 20px 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #f4c95d;
+      color: #111827;
+      font-weight: 900;
+      flex: none;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      color: #cbd5e1;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(21, 25, 34, .85);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      background: rgba(21, 25, 34, .86);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 70px rgba(0, 0, 0, .24);
+    }
+
+    .intro {
+      padding: 24px;
+    }
+
+    .intro h2 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      color: #c7d2e1;
+      margin: 0;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: rgba(27, 33, 48, .72);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .scope {
+      padding: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .scope-item {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(27, 33, 48, .72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .scope-item b {
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    .scope-item p {
+      margin: 0;
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #111827;
+      border-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 18px;
+    }
+
+    .phone-wrap {
+      padding: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .phone {
+      width: 320px;
+      min-height: 664px;
+      border-radius: 28px;
+      background: #0b0e13;
+      border: 8px solid #232b3a;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    }
+
+    .phone-head {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: #101520;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .screen {
+      padding: 16px;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #202839, #141925);
+      border: 1px solid #344056;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .big {
+      font-size: 28px;
+      font-weight: 900;
+      margin: 6px 0;
+      letter-spacing: 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, .16);
+      font-size: 13px;
+    }
+
+    .row:last-child { border-bottom: 0; }
+
+    .input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #344056;
+      background: #111722;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+
+    .input input {
+      width: 145px;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #111827;
+      font-weight: 900;
+      padding: 12px 14px;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: #242c3c;
+      color: #dce6f3;
+      border: 1px solid #364258;
+    }
+
+    .btn.danger {
+      background: #39202a;
+      color: #ffd5dd;
+      border: 1px solid #6f3140;
+    }
+
+    .btn.full {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status.good { background: rgba(73, 209, 125, .14); color: var(--good); }
+    .status.warn { background: rgba(255, 180, 84, .14); color: var(--warn); }
+    .status.bad { background: rgba(255, 100, 124, .14); color: var(--bad); }
+    .status.blue { background: rgba(105, 167, 255, .14); color: var(--blue); }
+
+    .detail {
+      padding: 18px;
+    }
+
+    .detail h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
+    .stepper {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(27, 33, 48, .72);
+    }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #273247;
+      color: #cbd5e1;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .step.active .num {
+      background: var(--accent);
+      color: #111827;
+    }
+
+    .step.done .num {
+      background: var(--good);
+      color: #07130b;
+    }
+
+    .step b {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .cms {
+      display: grid;
+      gap: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      color: #cbd5e1;
+      background: #1b2230;
+      font-size: 12px;
+    }
+
+    td { background: rgba(21, 25, 34, .76); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .flow-card {
+      border: 1px solid var(--line);
+      background: rgba(27, 33, 48, .72);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 104px;
+    }
+
+    .flow-card b {
+      display: block;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .flow-card span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 940px) {
+      .hero, .grid { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .pills { justify-content: flex-start; }
+      .metrics { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="topbar">
+      <div class="brand">
+        <div class="logo">88</div>
+        <div>
+          <h1>88EX Wallet Pay & Earn PM Demo</h1>
+          <p>APP + CMS + 状态机 + 异常流，一套面向产品经理岗位的可交付样例</p>
+        </div>
+      </div>
+      <div class="pills">
+        <span class="pill">钱包支付</span>
+        <span class="pill">活期理财</span>
+        <span class="pill">数字货币</span>
+        <span class="pill">CMS 风控</span>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="panel intro">
+        <h2>用 USDT 钱包余额申购 Earn，命中风险后进入 CMS 人工审核</h2>
+        <p>这个 demo 不追求大而全，而是选一个真实高频的小闭环：APP 下单、资金冻结、风控命中、CMS 审核、订单回写、用户通知。它能展示产品经理对正常流、异常流、状态机和研发交付边界的理解。</p>
+        <div class="metrics">
+          <div class="metric"><strong>6</strong><span>APP 核心页面/状态</span></div>
+          <div class="metric"><strong>4</strong><span>CMS 审核动作</span></div>
+          <div class="metric"><strong>3</strong><span>支付/理财/风控状态机</span></div>
+        </div>
+      </div>
+      <div class="panel scope">
+        <div class="scope-item"><b>APP</b><p>产品详情、申购确认、安全验证、审核中、成功/失败结果页。</p></div>
+        <div class="scope-item"><b>CMS</b><p>风控工单列表、命中规则、审核建议、放行/拒绝/补件/冻结。</p></div>
+        <div class="scope-item"><b>边界</b><p>余额不足、KYC 不足、产品售罄、APR 更新、重复提交、审核超时。</p></div>
+        <div class="scope-item"><b>交付</b><p>展示从 APP 流程、CMS 审核到状态机与异常流的完整产品拆解。</p></div>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="demo tabs">
+      <button class="tab active" data-tab="app">APP 原型</button>
+      <button class="tab" data-tab="cms">CMS 审核</button>
+      <button class="tab" data-tab="flow">流程与状态</button>
+      <button class="tab" data-tab="prd">PRD 摘要</button>
+    </nav>
+
+    <section id="app" class="tabpane">
+      <div class="grid">
+        <div class="panel phone-wrap">
+          <div class="phone">
+            <div class="phone-head"><span>88EX</span><span>09:41</span></div>
+            <div class="screen">
+              <div class="balance-card">
+                <span class="small">Flexible Earn · USDT</span>
+                <div class="big">6.80% APR</div>
+                <div class="row"><span>可用余额</span><b id="balance">4,280.00 USDT</b></div>
+                <div class="row"><span>起息时间</span><b>T+1 00:00 UTC+8</b></div>
+                <div class="row"><span>赎回规则</span><b>实时赎回</b></div>
+              </div>
+
+              <label class="small" for="amount">申购金额</label>
+              <div class="input">
+                <input id="amount" type="number" min="10" max="4280" value="2500">
+                <b>USDT</b>
+              </div>
+
+              <div class="balance-card">
+                <div class="row"><span>预计日收益</span><b id="yield">0.4658 USDT</b></div>
+                <div class="row"><span>服务费</span><b>0 USDT</b></div>
+                <div class="row"><span>风控预检</span><span id="riskBadge" class="status warn">待验证</span></div>
+              </div>
+
+              <button id="submitOrder" class="btn full">确认申购并支付</button>
+              <button id="triggerRisk" class="btn secondary full">模拟命中风控</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel detail">
+          <h3>APP 页面跳转逻辑</h3>
+          <div class="stepper" id="appSteps">
+            <div class="step active"><div class="num">1</div><div><b>产品详情</b><span>展示 APR、余额、风险披露、赎回规则。</span></div></div>
+            <div class="step"><div class="num">2</div><div><b>申购确认</b><span>输入金额，校验 KYC、余额、最小金额、产品状态。</span></div></div>
+            <div class="step"><div class="num">3</div><div><b>安全验证</b><span>交易密码 + 2FA，防止未授权申购。</span></div></div>
+            <div class="step"><div class="num">4</div><div><b>资金冻结</b><span>先冻结现货余额，再进入风控预检。</span></div></div>
+            <div class="step"><div class="num">5</div><div><b>审核或成功</b><span>低风险直接申购，高风险进入 CMS 审核。</span></div></div>
+          </div>
+          <h3>当前订单回执</h3>
+          <table>
+            <tr><th>字段</th><th>值</th></tr>
+            <tr><td>支付订单</td><td id="payOrder">未创建</td></tr>
+            <tr><td>理财订单</td><td id="earnOrder">未创建</td></tr>
+            <tr><td>订单状态</td><td id="orderStatus"><span class="status blue">等待用户提交</span></td></tr>
+            <tr><td>用户提示</td><td id="userHint">请输入金额并确认风险披露。</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="cms" class="tabpane hidden">
+      <div class="panel detail cms">
+        <h3>CMS > 风控中心 > Wallet Pay & Earn 审核</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>工单 ID</th>
+              <th>用户</th>
+              <th>金额</th>
+              <th>风险等级</th>
+              <th>命中规则</th>
+              <th>SLA</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RISK202606290091</td>
+              <td>UID 884219</td>
+              <td>2,500 USDT</td>
+              <td><span class="status warn">Medium</span></td>
+              <td>新设备 + 异地 IP + 大额首次申购</td>
+              <td>27 分钟</td>
+              <td id="cmsStatus"><span class="status warn">待审核</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="panel detail">
+            <h3>审核上下文</h3>
+            <div class="row"><span>KYC 等级</span><b>L2 已通过</b></div>
+            <div class="row"><span>资金来源</span><b>现货钱包 USDT</b></div>
+            <div class="row"><span>近 7 日充值</span><b>3,000 USDT</b></div>
+            <div class="row"><span>设备可信度</span><b>61 / 100</b></div>
+            <div class="row"><span>建议动作</span><b>要求补充或二线复核</b></div>
+          </div>
+          <div class="panel detail">
+            <h3>审核动作</h3>
+            <button class="btn full" data-action="approve">放行订单</button>
+            <button class="btn secondary full" data-action="info">要求补充材料</button>
+            <button class="btn danger full" data-action="reject">拒绝并解冻</button>
+            <button class="btn danger full" data-action="freeze">冻结账户</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="tabpane hidden">
+      <div class="panel detail">
+        <h3>核心业务流程</h3>
+        <div class="flow">
+          <div class="flow-card"><b>1. 提交</b><span>用户选择 USDT 活期理财，输入金额并确认风险披露。</span></div>
+          <div class="flow-card"><b>2. 验证</b><span>交易密码、2FA、KYC、余额、产品额度、地区限制。</span></div>
+          <div class="flow-card"><b>3. 冻结</b><span>创建支付订单，冻结现货余额，生成理财待支付订单。</span></div>
+          <div class="flow-card"><b>4. 风控</b><span>低风险自动放行，高风险创建 CMS 工单。</span></div>
+          <div class="flow-card"><b>5. 回写</b><span>成功则增加 Earn 资产，拒绝则解冻余额并通知用户。</span></div>
+        </div>
+        <h3 style="margin-top: 22px;">状态机摘要</h3>
+        <table>
+          <tr><th>对象</th><th>关键状态</th><th>异常处理</th></tr>
+          <tr><td>支付订单</td><td>Created / Frozen / RiskReview / Paid / Refunded</td><td>冻结成功但申购失败时进入补偿队列</td></tr>
+          <tr><td>理财订单</td><td>Init / AwaitingPayment / Subscribed / Accruing / Failed</td><td>产品售罄、APR 更新需重新确认</td></tr>
+          <tr><td>风控工单</td><td>Open / Assigned / NeedMoreInfo / Approved / Rejected / Frozen</td><td>SLA 超时升级二线复核</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="prd" class="tabpane hidden">
+      <div class="panel detail">
+        <h3>PRD 摘要</h3>
+        <table>
+          <tr><th>模块</th><th>产品要求</th></tr>
+          <tr><td>前置校验</td><td>登录、KYC、余额、最小金额、产品状态、地区限制、风控预检。</td></tr>
+          <tr><td>APP 提示</td><td>收益非保证、起息时间、赎回规则、审核原因泛化、预计处理时间。</td></tr>
+          <tr><td>CMS 权限</td><td>一线可放行/拒绝/补件；冻结账户和大额订单需二线复核。</td></tr>
+          <tr><td>幂等</td><td>客户端提交 client_order_token，后端防重复扣款。</td></tr>
+          <tr><td>通知</td><td>订单成功、审核中、补件、拒绝、冻结、审核超时均需模板。</td></tr>
+          <tr><td>埋点</td><td>详情曝光、申购点击、金额输入、提交、结果页、CMS 审核动作。</td></tr>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const panes = document.querySelectorAll(".tabpane");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(item => item.classList.remove("active"));
+        panes.forEach(pane => pane.classList.add("hidden"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.remove("hidden");
+      });
+    });
+
+    const amount = document.getElementById("amount");
+    const yieldEl = document.getElementById("yield");
+    const riskBadge = document.getElementById("riskBadge");
+    const payOrder = document.getElementById("payOrder");
+    const earnOrder = document.getElementById("earnOrder");
+    const orderStatus = document.getElementById("orderStatus");
+    const userHint = document.getElementById("userHint");
+    const appSteps = [...document.querySelectorAll("#appSteps .step")];
+    let riskMode = false;
+
+    function updateYield() {
+      const value = Number(amount.value || 0);
+      const daily = value * 0.068 / 365;
+      yieldEl.textContent = `${daily.toFixed(4)} USDT`;
+    }
+
+    function setStep(index) {
+      appSteps.forEach((step, i) => {
+        step.classList.toggle("done", i < index);
+        step.classList.toggle("active", i === index);
+      });
+    }
+
+    amount.addEventListener("input", updateYield);
+    updateYield();
+
+    document.getElementById("triggerRisk").addEventListener("click", () => {
+      riskMode = !riskMode;
+      riskBadge.className = riskMode ? "status warn" : "status good";
+      riskBadge.textContent = riskMode ? "将进入审核" : "预检通过";
+    });
+
+    document.getElementById("submitOrder").addEventListener("click", () => {
+      const value = Number(amount.value || 0);
+      payOrder.textContent = "PAY202606290001";
+      earnOrder.textContent = "EARN202606290001";
+      if (value < 10) {
+        orderStatus.innerHTML = '<span class="status bad">提交失败</span>';
+        userHint.textContent = "申购金额低于最小起购金额 10 USDT。";
+        setStep(1);
+        return;
+      }
+      if (value > 4280) {
+        orderStatus.innerHTML = '<span class="status bad">余额不足</span>';
+        userHint.textContent = "现货钱包可用余额不足，请充值或减少申购金额。";
+        setStep(1);
+        return;
+      }
+      if (riskMode) {
+        orderStatus.innerHTML = '<span class="status warn">风控审核中</span>';
+        userHint.textContent = "订单已冻结余额并进入人工审核，预计 30 分钟内完成。";
+        setStep(4);
+      } else {
+        orderStatus.innerHTML = '<span class="status good">申购成功</span>';
+        userHint.textContent = "申购成功，资产已转入 Earn，收益将于次日开始计算。";
+        riskBadge.className = "status good";
+        riskBadge.textContent = "预检通过";
+        setStep(4);
+      }
+    });
+
+    document.querySelectorAll("[data-action]").forEach(button => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.action;
+        const cmsStatus = document.getElementById("cmsStatus");
+        const map = {
+          approve: ["good", "已放行", "CMS 已放行，APP 订单状态回写为申购成功。"],
+          info: ["blue", "补件中", "已向用户发送补充材料通知，订单余额保持冻结。"],
+          reject: ["bad", "已拒绝", "订单被拒绝，余额进入解冻流程。"],
+          freeze: ["bad", "账户冻结", "账户被限制，订单停止处理并进入二线复核。"]
+        };
+        const [type, label, hint] = map[action];
+        cmsStatus.innerHTML = `<span class="status ${type}">${label}</span>`;
+        orderStatus.innerHTML = `<span class="status ${type}">${label}</span>`;
+        userHint.textContent = hint;
+      });
+    });
+  </script>
+</body>
+</html>
